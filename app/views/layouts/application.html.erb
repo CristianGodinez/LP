@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- SweetAlert2 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Google Charts loader -->
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+
+  <!-- Chartkick -->
+  <script src="https://cdn.jsdelivr.net/npm/chartkick@4.1.0/dist/chartkick.min.js"></script>
+
+  <title>Miel Cirene</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= favicon_link_tag 'favicon.ico' %>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
+</head>
+
+<body>
+  <%= render 'layouts/navbar' %>
+  <div class="container mt-4">
+    <%= yield %>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll("form .btn-eliminar").forEach(button => {
+        const form = button.closest("form");
+        const message = form.dataset.message || "¿Estás seguro de continuar?";
+
+        button.addEventListener("click", function (e) {
+          e.preventDefault();
+          Swal.fire({
+            title: "¿Estás seguro?",
+            text: message,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              form.submit();
+            }
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

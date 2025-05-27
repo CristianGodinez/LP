@@ -1,0 +1,21 @@
+<h1>Editar Venta</h1>
+
+<%= form_with model: @venta, url: reporte_path(@venta), method: :patch, local: true do |f| %>
+  <div class="form-group">
+    <%= f.label :producto_id, "Producto" %>
+    <%= f.text_field :producto_nombre, value: @venta.producto.nombre, class: "form-control", disabled: true %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :cantidad, "Cantidad" %>
+    <%= f.number_field :cantidad, value: @venta.cantidad, min: 1, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :cliente, "Cliente" %>
+    <%= f.text_field :cliente, value: @venta.cliente, class: "form-control" %>
+  </div>
+
+  <%= f.submit "Guardar cambios", class: "btn btn-primary" %>
+  <%= link_to "Cancelar", reportes_path, class: "btn btn-secondary ml-2" %>
+<% end %>

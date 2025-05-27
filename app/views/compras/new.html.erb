@@ -1,0 +1,8 @@
+
+<% content_for :title, "Nueva Compra" %>
+
+<h1>Nueva Compra</h1>
+
+<%= render "form", compra: @compra, productos: @productos %>
+
+<%= link_to "Volver", compras_path, class: "btn btn-secondary mt-3" %>

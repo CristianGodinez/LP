@@ -1,0 +1,12 @@
+wb.add_worksheet(name: "Ventas") do |sheet|
+  sheet.add_row ["Producto", "Cantidad", "Precio Total", "Fecha", "Cliente"]
+  @ventas.each do |venta|
+    sheet.add_row [
+      venta.producto.nombre,
+      venta.cantidad,
+      venta.precio_total,
+      venta.created_at.strftime("%d/%m/%Y"),
+      venta.cliente
+    ]
+  end
+end

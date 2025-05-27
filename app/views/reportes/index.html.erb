@@ -1,0 +1,91 @@
+<h1>Reportes de Ventas</h1>
+
+<%= form_with url: reportes_path, method: :get, local: true, class: "mb-4" do |f| %>
+  <div class="form-row d-flex flex-wrap gap-2 mb-2">
+    <div class="form-group mr-3">
+      <%= f.label :producto_id, "Producto" %>
+      <%= f.select :producto_id,
+          options_from_collection_for_select(@productos, :id, :nombre, params[:producto_id]),
+          { include_blank: "Todos" },
+          class: "form-control" %>
+    </div>
+
+    <div class="form-group mr-3">
+      <%= f.label :cliente, "Cliente" %>
+      <%= f.select :cliente,
+          options_for_select(@clientes, params[:cliente]),
+          { include_blank: "Todos" },
+          class: "form-control" %>
+    </div>
+
+    <div class="form-group mr-3">
+      <%= f.label :empleado, "Empleado" %>
+      <%= f.select :empleado,
+          options_for_select(@empleados.map { |e| ["#{e.nombre} #{e.apellido}", "#{e.nombre} #{e.apellido}"] }, params[:empleado]),
+          { include_blank: "Todos" },
+          class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-row d-flex flex-wrap gap-2">
+    <div class="form-group mr-3">
+      <%= f.label :fecha_inicio, "Desde" %>
+      <%= f.date_field :fecha_inicio, value: params[:fecha_inicio], class: "form-control" %>
+    </div>
+
+    <div class="form-group mr-3">
+      <%= f.label :fecha_fin, "Hasta" %>
+      <%= f.date_field :fecha_fin, value: params[:fecha_fin], class: "form-control" %>
+    </div>
+
+    <div class="form-group align-self-end">
+      <%= f.submit "Filtrar", class: "btn btn-warning" %>
+    </div>
+
+    <div class="form-group align-self-end ml-2">
+      <%= link_to "Exportar PDF", exportar_pdf_reportes_path(request.query_parameters), class: "btn btn-outline-dark" %>
+    </div>
+
+    <div class="form-group align-self-end ml-2">
+      <%= link_to "Exportar Excel", exportar_excel_reportes_path(format: :xlsx, **request.query_parameters), class: "btn btn-outline-success" %>
+    </div>
+  </div>
+<% end %>
+
+<div class="my-4">
+  <h3>Ingresos por Producto</h3>
+  <%= column_chart @ventas.group_by { |v| v.producto.nombre }.transform_values { |ventas| ventas.sum(&:precio_total) }, height: "300px", colors: ["#28a745"] %>
+</div>
+
+<div class="table-responsive mt-4">
+  <table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th>Producto</th>
+        <th><%= sortable "cantidad", "Cantidad" %></th>
+        <th><%= sortable "cliente", "Cliente" %></th>
+        <th><%= sortable "precio_total", "Precio Total" %></th>
+        <th><%= sortable "created_at", "Fecha" %></th>
+        <th>Empleado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @ventas.each do |venta| %>
+        <tr>
+          <td><%= venta.producto.nombre %></td>
+          <td><%= venta.cantidad %></td>
+          <td><%= venta.cliente %></td>
+          <td>$<%= venta.precio_total %></td>
+          <td><%= venta.created_at.strftime("%d/%m/%Y") %></td>
+          <td><%= venta.user ? "#{venta.user.nombre} #{venta.user.apellido}" : "—" %></td>
+          <td class="text-nowrap">
+            <%= link_to "Editar", edit_reporte_path(venta), class: "btn btn-sm btn-warning" %>
+            <%= button_to "Eliminar", reporte_path(venta), method: :delete, class: "btn btn-sm btn-danger btn-eliminar", form: { "data-message": "Esta acción eliminará la venta y restaurará el stock." } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

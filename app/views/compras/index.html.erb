@@ -1,0 +1,61 @@
+<h1>Registrar Ventas</h1>
+
+<% if flash[:notice] %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= flash[:notice] %>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% elsif flash[:alert] %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= flash[:alert] %>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% end %>
+
+
+<% @productos.each do |producto| %>
+  <div class="card mb-3">
+    <div class="card-header">
+      <h5><%= producto.nombre %></h5>
+    </div>
+    <div class="card-body">
+      <p><%= producto.descripcion %></p>
+      <p><strong>Stock:</strong> <%= producto.stock %></p>
+
+      <% compra = @compra && @compra.producto_id == producto.id ? @compra : Compra.new(producto_id: producto.id) %>
+
+      <% if compra.errors.any? %>
+        <div class="alert alert-danger">
+          <ul class="mb-0">
+            <% compra.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+
+      <%= form_with(model: compra, url: compras_path, local: true) do |f| %>
+        <%= f.hidden_field :producto_id, value: producto.id %>
+
+        <div class="form-group">
+          <%= f.label :cantidad, "Cantidad Vendida" %>
+          <%= f.number_field :cantidad, class: "form-control", min: 1, required: true %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :cliente, "Nombre del Cliente" %>
+          <%= f.text_field :cliente, class: "form-control", required: true %>
+        </div>
+
+        <%= f.submit "Registrar Venta", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<hr>

@@ -1,0 +1,43 @@
+<%= form_with model: @empleado, url: @empleado.persisted? ? empleado_path(@empleado) : empleados_path, local: true do |f| %>
+
+  <% if @empleado.errors.any? %>
+    <div class="alert alert-danger">
+      <h5>Se encontraron los siguientes errores:</h5>
+      <ul>
+        <% @empleado.errors.full_messages.each do |mensaje| %>
+          <li><%= mensaje %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :nombre, "Nombre" %>
+    <%= f.text_field :nombre, class: "form-control", required: true, autocomplete: "off" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :apellido, "Apellido" %>
+    <%= f.text_field :apellido, class: "form-control", required: true, autocomplete: "off" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :email, "Correo Electrónico" %>
+    <%= f.email_field :email, class: "form-control", required: true, autocomplete: "off" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :telefono, "Número de Teléfono" %>
+    <%= f.telephone_field :telefono, class: "form-control", pattern: "[0-9]*", inputmode: "numeric", required: true, autocomplete: "off" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :password, "Contraseña" %>
+    <%= f.password_field :password, class: "form-control", autocomplete: "new-password" %>
+    <% if @empleado.persisted? %>
+      <small class="form-text text-muted">Dejar en blanco si no deseas cambiarla</small>
+    <% end %>
+  </div>
+
+  <%= f.submit "Guardar", class: "btn btn-success" %>
+<% end %>

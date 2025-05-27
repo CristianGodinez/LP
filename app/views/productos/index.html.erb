@@ -1,0 +1,36 @@
+<h1 class="mb-4">Listado de Productos</h1>
+
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>Nombre</th>
+      <th>Descripción</th>
+      <th>Precio</th>
+      <th>Stock</th>
+      <th>Acciones</th>
+      <th>Imagen</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @productos.each do |producto| %>
+      <tr>
+        <td><%= producto.nombre %></td>
+        <td><%= producto.descripcion %></td>
+        <td><%= number_to_currency(producto.precio) %></td>
+        <td><%= producto.stock %></td>
+        <td class="text-nowrap">
+          <%= link_to 'Ver', producto, class: "btn btn-sm btn-info" %>
+          <%= link_to 'Editar', edit_producto_path(producto), class: "btn btn-sm btn-warning" %>
+          <%= button_to 'Eliminar', producto_path(producto), method: :delete, class: "btn btn-sm btn-danger btn-eliminar", form: { "data-message": "Esta acción eliminará el producto del sistema." , style: 'display: inline' } %>
+        </td>
+        <td>
+          <% if producto.imagen.attached? %>
+            <%= image_tag producto.imagen.variant(resize_to_limit: [80, 80]), class: "img-thumbnail" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Nuevo Producto', new_producto_path, class: "btn btn-primary" %>

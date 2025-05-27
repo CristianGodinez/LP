@@ -1,0 +1,16 @@
+<% content_for :title, "Editar Producto" %>
+
+<div class="container mt-5">
+  <h1 class="mb-4">Editar Producto</h1>
+
+  <div class="card">
+    <div class="card-body">
+      <%= render "form", producto: @producto %>
+    </div>
+  </div>
+
+  <div class="mt-3">
+    <%= link_to "Ver Producto", @producto, class: "btn btn-info" %>
+    <%= link_to "Volver al listado", productos_path, class: "btn btn-secondary" %>
+  </div>
+</div>
