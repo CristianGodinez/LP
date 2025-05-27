@@ -87,7 +87,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
-    brakeman (7.0.0)
+    brakeman (7.0.2)
       racc
     builder (3.3.0)
     capybara (3.40.0)
@@ -208,6 +208,8 @@ GEM
       ast (~> 2.4.1)
       racc
     pdf-core (0.10.0)
+    pg (1.5.9)
+    pg (1.5.9-x64-mingw-ucrt)
     pp (0.6.2)
       prettyprint
     prawn (2.5.0)
@@ -398,6 +400,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   kamal
+  pg
   prawn-table
   propshaft
   puma (>= 5.0)
